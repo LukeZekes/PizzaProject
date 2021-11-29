@@ -7,7 +7,7 @@ public class Customer {
     public int id; //-1 if guest
     OrderItem[] cartArray;
 //    public static int numCustomers = 0;
-    private static boolean isInteger(String input) {
+    /*private static boolean isInteger(String input) {
         try {
             Integer.parseInt(input);
             return true;
@@ -15,7 +15,7 @@ public class Customer {
         catch(NumberFormatException e) {
             return false;
         }
-    }
+    }*/
 
     private Customer(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw, boolean isNew) throws IOException {
         if(isNew) //Guest
@@ -79,6 +79,7 @@ public class Customer {
                 break;
             }
         }
+        reader.close();
         if(found) {
             reader = new BufferedReader(new FileReader(path));
             reader.readLine();
@@ -88,6 +89,7 @@ public class Customer {
                     sb.append("\n");
                 }
             }
+            reader.close();
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
             writer.write(sb.toString());
             writer.close();
@@ -128,8 +130,11 @@ public class Customer {
         String line;
         int[] numCustomers = getNumCustomers();
 
-        if(numCustomers[0] <= 0 || numCustomers[1] <= 0)
+        if(numCustomers[0] <= 0 || numCustomers[1] <= 0) {
+            reader.close();
             return new int[]{0, 0};
+        }
+
         sb.append(numCustomers[0] - 1);
         sb.append(",");
         sb.append(numCustomers[1]);
