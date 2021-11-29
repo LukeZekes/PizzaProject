@@ -261,6 +261,7 @@ public class Customer {
      */
     private static int[] decrementNumCustomers() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
         StringBuilder sb = new StringBuilder();
         String line;
         int[] numCustomers = getNumCustomers();
@@ -268,6 +269,7 @@ public class Customer {
         if(numCustomers[0] <= 0 || numCustomers[1] <= 0) {
             sb.append("0,0");
             reader.close();
+          
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
             bufferedWriter.write(sb.toString());
             bufferedWriter.close();
@@ -287,7 +289,6 @@ public class Customer {
         }
         reader.close();
         //Override file
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
         bufferedWriter.write(sb.toString());
         bufferedWriter.close();
         return new int[]{numCustomers[0] - 1, numCustomers[1]};
