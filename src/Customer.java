@@ -85,16 +85,31 @@ public class Customer {
      * @param s State
      * @param z ZIP
      * @param pw Password
-     * @return A Customer object with the included information, that has been saved to the database with a unique ID 
+     * @return A Customer object with the included information, that has been saved to the database with a unique ID
+     * @return null if an account with that phone number already exists
      * @throws IOException
+
      */
     public static Customer createAccount(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw) throws IOException {
-        Customer customer = new Customer(fn, ln, pn, e, sa, c, s, z, pw, false);
         try {
-            saveCustomer(customer);
-        } catch (IOException ioException) {
-            System.out.println(ioException.getMessage());
+            //Check for account with same phone number
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            String line;
+            reader.readLine();
+            while((line = reader.readLine()) != null) {
+                if(line.split(",")[3].equals(pn)) {
+                    //An account already has this phone number
+                    reader.close();
+                    throw new Exception("An account with the phone number already exists");
+                }
+            }
+            reader.close();
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            return null;
         }
+        Customer customer = new Customer(fn, ln, pn, e, sa, c, s, z, pw, false);
+        saveCustomer(customer);
         return customer;
     }
     /**
@@ -254,6 +269,8 @@ public class Customer {
         if(numCustomers[0] <= 0 || numCustomers[1] <= 0) {
             sb.append("0,0");
             reader.close();
+          
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
             bufferedWriter.write(sb.toString());
             bufferedWriter.close();
             return new int[]{0, 0};
