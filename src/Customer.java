@@ -7,6 +7,7 @@ public class Customer {
     public int id; //-1 if guest
     OrderItem[] cartArray;
     
+    //#region Creating/Retrieving Account
     /**
      * Private constructor used when creating a new account or creating a guest account.
      * <b>DO NOT CALL TO CREATE A CUSTOMER!</b> Use <i>createAccount()</i> or <i>createGuestAccount()</i>.
@@ -162,6 +163,9 @@ public class Customer {
             throw new Exception("Customer with phone number " + phoneNum + " not found!");
         }
     }
+    //#endregion
+    
+    //#region Modify Database/Num Customers
     /**
      * Saves a Customer to the database as a string in the format:
      * <p>id,first name,last name,phone number,email,password,full address</p>
@@ -328,8 +332,21 @@ public class Customer {
             return new int[]{0, 0};
         }
     }
+    //#endregion
 
-
+    /**
+     * Validates that a provided phone number is, in fact, a valid phone number
+     * <p>A valid phone number must be inputted as a string consisting of exactly 10 numerical digits, <b>with no letters or special characters</b>.</p>
+     * <p><i>E.g. 1234567890 is a valid input, but 123-456-7890 is not.</i></p>
+     * @param phoneNumber The number to be validated
+     * @return True if the number is a valid phone number
+     */
+    private static boolean validatePhoneNumber(String phoneNumber) {
+        if(phoneNumber.length() != 10)
+            return false;
+            
+        return true;
+    }
     public void NewOrder() {
         cartArray = new OrderItem[DEFAULT_ORDER_SIZE];
     }
