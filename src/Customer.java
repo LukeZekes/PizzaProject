@@ -1,12 +1,18 @@
 import java.io.*;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
 public class Customer {
     final int DEFAULT_ORDER_SIZE = 10;
+    final static PhoneNumberFormat DEFAULT_PHONE_NUMBER_FORMAT = PhoneNumberFormat.NATIONAL;
     final static String path = "customers.txt";
     public String firstName, lastName, phoneNum, email, fullAddress, streetAddress, city, state, ZIP, password, orderComments;
     public int id; //-1 if guest
     OrderItem[] cartArray;
     
+    //#region Creating/Retrieving Account
     /**
      * Private constructor used when creating a new account or creating a guest account.
      * <b>DO NOT CALL TO CREATE A CUSTOMER!</b> Use <i>createAccount()</i> or <i>createGuestAccount()</i>.
@@ -92,7 +98,12 @@ public class Customer {
      */
     public static Customer createAccount(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw) throws IOException {
         try {
-            //Check for account with same phone number
+            //Check if phone number is valid
+            if(!validatePhoneNumber(pn))
+                throw new Exception("That is not a valid US phone number!");
+            //Reformat phone number to standard format Customer.DEFAULT_PHONE_NUMBER_FORMAT: 1234567890 -> (123) 456 7890
+            pn = reformatPhoneNumber(pn);
+            //Check for account with same phone number            
             BufferedReader reader = new BufferedReader(new FileReader(path));
             String line;
             reader.readLine();
@@ -136,6 +147,10 @@ public class Customer {
      * @throws Exception if no customer is found with that information
      */
     public static Customer retrieveAccount(String phoneNum, String password) throws Exception {
+        if(!validatePhoneNumber(phoneNum))
+            throw new Exception("That is not a valid US phone number.");
+
+        phoneNum = reformatPhoneNumber(phoneNum);
         //Locate customer
         BufferedReader reader = new BufferedReader(new FileReader(path));
         boolean found = false;
@@ -146,7 +161,6 @@ public class Customer {
             String linePassword = line.split(",")[5];
             if(linePhoneNum.equals(phoneNum) && linePassword.equals(password)) {
                 found = true;
-                //Build Customer object from this data
                 break;
             }
         }
@@ -162,6 +176,9 @@ public class Customer {
             throw new Exception("Customer with phone number " + phoneNum + " not found!");
         }
     }
+    //#endregion
+    
+    //#region Modify Database/Num Customers
     /**
      * Saves a Customer to the database as a string in the format:
      * <p>id,first name,last name,phone number,email,password,full address</p>
@@ -261,7 +278,6 @@ public class Customer {
      */
     private static int[] decrementNumCustomers() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
         StringBuilder sb = new StringBuilder();
         String line;
         int[] numCustomers = getNumCustomers();
@@ -269,7 +285,6 @@ public class Customer {
         if(numCustomers[0] <= 0 || numCustomers[1] <= 0) {
             sb.append("0,0");
             reader.close();
-          
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
             bufferedWriter.write(sb.toString());
             bufferedWriter.close();
@@ -289,6 +304,7 @@ public class Customer {
         }
         reader.close();
         //Override file
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
         bufferedWriter.write(sb.toString());
         bufferedWriter.close();
         return new int[]{numCustomers[0] - 1, numCustomers[1]};
@@ -329,8 +345,46 @@ public class Customer {
             return new int[]{0, 0};
         }
     }
+    //#endregion
 
-
+    /**
+     * Validates that a provided phone number is, in fact, a valid phone number.
+     * <p>Uses Google's <i>libphonenumber</i> library</p>
+     * @param phoneNumber The number to be validated
+     * @return True if the number is a valid phone number
+     */
+    public static boolean validatePhoneNumber(String phoneNumber) {
+        try {
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        PhoneNumber number = phoneNumberUtil.parse(phoneNumber, "US"); 
+        if(phoneNumberUtil.isValidNumber(number)) {
+            return true;
+        }
+        else {
+            System.out.println("Error: " + phoneNumber + " is not a valid US phone number.");
+            return false;
+        }
+        } catch(NumberParseException e) {
+            System.out.println("Error: " + phoneNumber + " is not a valid US phone number.");
+            return false;
+        }
+    }
+    /**
+     * Reformats the provided number to Customer.DEFAULT_PHONE_NUMBER_FORMAT, and returns the modified string
+     * @param phoneNumber The number to be reformatted
+     * @return A new string consisting of phoneNumber reformatted to Customer.DEFAULT_PHONE_NUMBER_FORMAT.
+     * Returns phoneNumber if phoneNumber is not a valid phone number
+     */
+    public static String reformatPhoneNumber(String phoneNumber) {
+        try {
+            PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+            PhoneNumber number = phoneNumberUtil.parse(phoneNumber, "US");
+            return phoneNumberUtil.format(number, DEFAULT_PHONE_NUMBER_FORMAT);
+        } catch(NumberParseException e) {
+            System.out.println(phoneNumber + " is not a valid US phone number.");
+            return phoneNumber;
+        }
+    }
     public void NewOrder() {
         cartArray = new OrderItem[DEFAULT_ORDER_SIZE];
     }
