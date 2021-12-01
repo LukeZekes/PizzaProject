@@ -32,7 +32,7 @@ public class OrderMenu {
     /**
      * Class that PizzaItem and DrinkItem inherit from.
      */
-    static class OrderItem {
+    protected static class OrderItem {
         float cost;
         String size;
         private OrderItem() {}
@@ -48,7 +48,7 @@ public class OrderMenu {
     /**
      * A class representing a pizza with a size, crust, number of toppings, and cost.
      */
-    private static class PizzaItem extends OrderItem {
+    protected static class PizzaItem extends OrderItem {
         String crust;
         ArrayList<String> toppings;
         final static float sCost = 5.99f;
@@ -112,7 +112,7 @@ public class OrderMenu {
     /**
      * A class representing a drink with a size, amount of ice, variety, and cost.
      */
-    private static class DrinkItem extends OrderItem {
+    protected static class DrinkItem extends OrderItem {
         String ice, variety;
         final static float sCost = 1.00f;
         final static float mCost = 1.80f;
