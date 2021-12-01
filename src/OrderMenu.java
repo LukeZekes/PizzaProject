@@ -16,7 +16,7 @@ public class OrderMenu {
      * @param crust The type of the crust.
      * @param toppings The toppings on the pizza.
      */
-    public static void AddPizza(String size, String crust, String[] toppings){
+    public static void AddPizza(String size, String crust, ArrayList<String> toppings){
         orderItemArray.add(new PizzaItem(size, crust, toppings));
     };
     /**
@@ -32,9 +32,10 @@ public class OrderMenu {
     /**
      * Class that PizzaItem and DrinkItem inherit from.
      */
-    private static class OrderItem {
+    static class OrderItem {
         float cost;
         String size;
+        private OrderItem() {}
         /**
          * @return The cost of the item.
          */
@@ -49,7 +50,7 @@ public class OrderMenu {
      */
     private static class PizzaItem extends OrderItem {
         String crust;
-        String[] toppings;
+        ArrayList<String> toppings;
         final static float sCost = 5.99f;
         final static float mCost = 7.99f;
         final static float lCost = 9.99f;
@@ -62,7 +63,7 @@ public class OrderMenu {
          * @param crust The type of the crust
          * @param toppings The toppings on the pizza
          */
-        PizzaItem(String size, String crust, String[] toppings) {
+        PizzaItem(String size, String crust, ArrayList<String> toppings) {
             this.size = size.toUpperCase();
             this.crust = crust;
             this.toppings = toppings;
@@ -93,7 +94,7 @@ public class OrderMenu {
         /**
          * @return The toppings on the pizza in an array
          */
-        String[] getToppings() {return toppings; }
+        ArrayList<String> getToppings() {return toppings; }
 
         /**
          * @return Returns a String in the following format:
