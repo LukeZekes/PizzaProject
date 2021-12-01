@@ -272,7 +272,9 @@
         <children>
           <component id="abaa2" class="javax.swing.JTextArea" binding="cartDisplayTextArea">
             <constraints/>
-            <properties/>
+            <properties>
+              <editable value="false"/>
+            </properties>
           </component>
         </children>
       </scrollpane>
