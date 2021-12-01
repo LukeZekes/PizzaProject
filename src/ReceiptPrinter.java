@@ -1,6 +1,9 @@
 import java.io.*;
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
 
@@ -22,6 +25,10 @@ public class ReceiptPrinter {
         NumberFormat moneyFormat = NumberFormat.getCurrencyInstance(Locale.US);
 
         final String centerPadding = "";
+
+        
+        float total = 0;
+        final float TAX = 0.08f;
         //Heading
         sb.append(centerPadding + "Mom and Pop's Pizza Shop\n");
         sb.append("Receipt\n");
@@ -54,17 +61,26 @@ public class ReceiptPrinter {
                 }
                 //Reformat cost to look like actual money
                 sb.append("" + moneyFormat.format(item.cost) + "\n");
+                total += item.getCost();
             }
             else {
-                OrderMenu.DrinkItem item = (OrderMenu.DrinkItem) OrderMenu.orderItemArray.get(i);
-                //TODO: Reformat cost to look like actual money 
-                
-                fmt.format("Drink: %s, %s ice, %s - %s\n", item.getSize(), item.getIce(), item.getVariety(), moneyFormat.format(item.getCost()));
+                OrderMenu.DrinkItem item = (OrderMenu.DrinkItem) OrderMenu.orderItemArray.get(i);                
+                fmt.format("Drink: %s, %s ice, %s - %s%n", item.getSize(), item.getIce(), item.getVariety(), moneyFormat.format(item.getCost()));
+                total += item.getCost();
             }
-            
+
         }
 
+        //Tax and total
+        float orderTax = total * TAX;
+        fmt.format("Tax(%s%%) - %s%n", TAX * 100, moneyFormat.format(orderTax));
+        fmt.format("Total - %s%n", moneyFormat.format(total += orderTax));
 
+        //Footer
+        Date currentDate = new Date();
+        String dateStr = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+        fmt.format("Date: %s", dateStr);
+        fmt.close();
         System.out.println(sb.toString());
     }
 }
