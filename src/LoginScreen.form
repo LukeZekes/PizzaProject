@@ -16,15 +16,15 @@
           <text value="Mom and Pop's Pizzeria!"/>
         </properties>
       </component>
-      <component id="c6be1" class="javax.swing.JLabel" binding="userLabel">
+      <component id="c6be1" class="javax.swing.JLabel" binding="phoneNumLabel">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Username"/>
+          <text value="Phone Number"/>
         </properties>
       </component>
-      <component id="e7733" class="javax.swing.JTextField" binding="userTextField">
+      <component id="e7733" class="javax.swing.JTextField" binding="phoneNumTextField">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -40,7 +40,7 @@
           <text value="Password"/>
         </properties>
       </component>
-      <component id="a361" class="javax.swing.JPasswordField" binding="passwordField1" default-binding="true">
+      <component id="a361" class="javax.swing.JPasswordField" binding="passwordField">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>

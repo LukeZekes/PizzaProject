@@ -20,6 +20,7 @@ public class MenuScreen extends JFrame {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(menuPanel);
+        this.setSize(800, 600);
         this.pack();
     }
 
@@ -153,6 +154,7 @@ public class MenuScreen extends JFrame {
         cartDisplayScrollPane = new JScrollPane();
         menuPanel.add(cartDisplayScrollPane, new GridConstraints(1, 1, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         cartDisplayTextArea = new JTextArea();
+        cartDisplayTextArea.setEditable(false);
         cartDisplayScrollPane.setViewportView(cartDisplayTextArea);
     }
 

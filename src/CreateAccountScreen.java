@@ -3,9 +3,11 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CreateAccountScreen extends JFrame {
-    private JPanel createAccountPanel;
+    public JPanel createAccountPanel;
     private JLabel accountCreationLabel, firstNameLabel, lastNameLabel, phoneNumLabel, emailLabel, addressLabel, cityLabel, stateLabel, zipLabel, passLabel, confirmPassLabel;
     private JTextField firstNameTextField, lastNameTextField, phoneNumTextField, emailTextField, addressTextField, cityTextField, stateTextField, zipTextField;
     private JPasswordField passwordField, confirmPasswordField;
@@ -16,7 +18,21 @@ public class CreateAccountScreen extends JFrame {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(createAccountPanel);
+        this.setSize(800, 600);
         this.pack();
+
+        returnToLoginScreenButton.addActionListener(new ActionListener() {
+            /**
+             * Closes current window and opens new LoginScreen
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                JFrame frame = new LoginScreen(title);
+                frame.setVisible(true);
+            }
+        });
     }
 
     {

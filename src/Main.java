@@ -1,9 +1,14 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Main{
     public static void main(String[] args){
-        JFrame frame = new MenuScreen("Welcome to Mom and Pop's Pizzeria!");
+        String title = "Mom and Pop's Pizzeria";
+
+        JFrame frame = new LoginScreen(title);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
+        frame.pack();
         frame.setVisible(true);
     }
 }
