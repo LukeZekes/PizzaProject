@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 /**
- * Class to handle the creation of items and addition of them to the order
+ * Class to handle the addition of items to the order.
+ * <p>Instead of instantiating an object of this class, the list of items and methods to add items are all <b>static</b>.</p>
  */
 public class OrderMenu {
     /**
      * Contains all of the items in the order.
      */
     public static ArrayList<OrderItem> orderItemArray = new ArrayList<OrderItem>();
-
 
     /**
      * Adds a pizza object to the order with the specified customizaton.
@@ -66,7 +66,7 @@ public class OrderMenu {
             this.size = size.toUpperCase();
             this.crust = crust;
             this.toppings = toppings;
-            switch(size) {
+            switch(this.size) {
                 case "SMALL":
                     this.cost = sCost;
                     break;
@@ -81,6 +81,7 @@ public class OrderMenu {
                     break;
                 default:
                     System.out.println("Invalid size, defaulting to EXTRA-LARGE");
+                    this.size = "EXTRA-LARGE";
                     this.cost = xLCost;
                     break;
             }
@@ -93,7 +94,19 @@ public class OrderMenu {
          * @return The toppings on the pizza in an array
          */
         String[] getToppings() {return toppings; }
-    
+
+        /**
+         * @return Returns a String in the following format:
+         * <p>Pizza: <i>size</i>, <i>crust</i>, <i>toppings</i>, $<i>cost</i></p>
+         */
+        public String toString() {
+            String out = "Pizza: " + size + ", " + crust + ", ";
+            for (String t : toppings) {
+                out += t + ", ";
+            }
+            out += "$" + cost;
+            return out; 
+        }
     }
     /**
      * A class representing a drink with a size, amount of ice, variety, and cost.
@@ -104,6 +117,7 @@ public class OrderMenu {
         final static float mCost = 1.80f;
         final static float lCost = 2.00f;
         final static float xLCost = 2.50f;
+
         /**
          * Creates an instance of the DrinkItem class. The cost of the item is calculated based on the size of the drink.
          * @param size The size of the drink. The valid sizes are (case insensitive): "SMALL", "MEDIUM", "LARGE", "EXTRA-LARGE".
@@ -115,7 +129,7 @@ public class OrderMenu {
             this.size = size.toUpperCase();
             this.ice = ice;
             this.variety = variety;
-            switch(size) {
+            switch(this.size) {
                 case "SMALL":
                     this.cost = sCost;
                     break;
@@ -130,6 +144,7 @@ public class OrderMenu {
                     break;
                 default:
                     System.out.println("Invalid size, defaulting to EXTRA-LARGE");
+                    this.size = "EXTRA-LARGE";
                     this.cost = xLCost;
                     break;
             }
@@ -144,5 +159,13 @@ public class OrderMenu {
          */
         String getVariety() {return variety;}
 
+        /**
+         * @return Returns a String in the following format:
+         * <p>Drink: <i>size</i>, <i>variety</i>, <i>ice</i> ice, $<i>cost</i></p>
+         */
+        public String toString() {
+            String out = "Drink: " + size + ", " + variety + ", " + ice + " ice, $" + cost;
+            return out;
+        }
     }
 }
