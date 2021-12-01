@@ -4,13 +4,13 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
+
 public class Customer {
     final int DEFAULT_ORDER_SIZE = 10;
     final static PhoneNumberFormat DEFAULT_PHONE_NUMBER_FORMAT = PhoneNumberFormat.NATIONAL;
     final static String path = "customers.txt";
-    public String firstName, lastName, phoneNum, email, fullAddress, streetAddress, city, state, ZIP, password, orderComments;
+    public String firstName, lastName, phoneNum, email, fullAddress, streetAddress, city, state, ZIP, password;
     public int id; //-1 if guest
-    OrderItem[] cartArray;
     
     //#region Creating/Retrieving Account
     /**
@@ -35,7 +35,6 @@ public class Customer {
         else {
             id = incrementNumCustomers()[0];
         }
-        cartArray = new OrderItem[0];
         firstName = fn;
         lastName = ln;
         phoneNum = pn;
@@ -47,7 +46,6 @@ public class Customer {
 //        fullAddress = String.format("%s\n%s,%s\n%s", streetAddress, city, state, ZIP);
         fullAddress = String.format("%s,%s,%s,%s", streetAddress, city, state, ZIP);
         password = pw;
-        orderComments = "";
     }
     /**
      * Private constructor used when retrieving an account from the database.
@@ -65,7 +63,6 @@ public class Customer {
      * @t
      */
     private Customer(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw, int existingID) throws IOException {
-        cartArray = new OrderItem[0];
         firstName = fn;
         lastName = ln;
         phoneNum = pn;
@@ -76,7 +73,6 @@ public class Customer {
         ZIP = z;
         fullAddress = String.format("%s,%s,%s,%s", streetAddress, city, state, ZIP);
         password = pw;
-        orderComments = "";
         id = existingID;
     }
     
@@ -384,11 +380,5 @@ public class Customer {
             System.out.println(phoneNumber + " is not a valid US phone number.");
             return phoneNumber;
         }
-    }
-    public void NewOrder() {
-        cartArray = new OrderItem[DEFAULT_ORDER_SIZE];
-    }
-    public void AddOrderComments(String comment) {
-        orderComments = comment;
     }
 }
