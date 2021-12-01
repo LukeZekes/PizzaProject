@@ -163,7 +163,7 @@ public class Customer {
         reader.close();
         if(found) {
             //Build a customer object from this data
-            System.out.println(line);
+            //System.out.println(line);
             String[] data = line.split(",");
             Customer customer = new Customer(data[1], data[2], data[3], data[4], data[6], data[7], data[8], data[9], data[5], Integer.parseInt(data[0]));
             return customer;
@@ -357,11 +357,11 @@ public class Customer {
             return true;
         }
         else {
-            System.out.println("Error: " + phoneNumber + " is not a valid US phone number.");
+            // System.out.println("Error: " + phoneNumber + " is not a valid US phone number.");
             return false;
         }
         } catch(NumberParseException e) {
-            System.out.println("Error: " + phoneNumber + " is not a valid US phone number.");
+            // System.out.println("Error: " + phoneNumber + " is not a valid US phone number.");
             return false;
         }
     }
