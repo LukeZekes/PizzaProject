@@ -37,7 +37,7 @@ public class LoginScreen extends JFrame {
                 String password = passwordField.getText();
 
                 try {
-                    Customer.retrieveAccount(phoneNum, password);
+                    Customer.currentCustomer = Customer.retrieveAccount(phoneNum, password);
                     dispose();
                     JFrame frame = new MenuScreen(title);
                     frame.setVisible(true);
