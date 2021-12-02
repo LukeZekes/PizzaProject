@@ -5,6 +5,9 @@ import com.intellij.uiDesigner.core.Spacer;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MenuScreen extends JFrame {
     private JPanel menuPanel, pizzaPanel, drinkPanel, pizzaToppingsPanel;
@@ -22,6 +25,20 @@ public class MenuScreen extends JFrame {
         this.setContentPane(menuPanel);
         this.setSize(800, 600);
         this.pack();
+
+        printToReceiptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("PRINTING RECEIPT");
+                try {
+                    ReceiptPrinter.printReceipt(Customer.currentCustomer, "receipt.txt");
+                } catch (IOException ioException) {
+                    System.out.println("Could not produce receipt:\n");
+                    System.out.println(ioException.getMessage());
+                    ioException.printStackTrace();
+                }
+            }
+        });
     }
 
     {

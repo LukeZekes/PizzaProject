@@ -11,7 +11,7 @@ public class Customer {
     final static String path = "customers.txt";
     public String firstName, lastName, phoneNum, email, fullAddress, streetAddress, city, state, ZIP, password;
     public int id; //-1 if guest
-    
+    public static Customer currentCustomer;
     //#region Creating/Retrieving Account
     /**
      * Private constructor used when creating a new account or creating a guest account.
