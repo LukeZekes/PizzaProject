@@ -5,7 +5,7 @@ public class Main{
     public static void main(String[] args){
         String title = "Mom and Pop's Pizzeria";
 
-        JFrame frame = new LoginScreen(title);
+        JFrame frame = new MenuScreen(title);
         frame.setVisible(true);
     }
 }
