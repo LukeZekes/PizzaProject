@@ -7,7 +7,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class MenuScreen extends JFrame {
     private JPanel menuPanel, pizzaPanel, drinkPanel, pizzaToppingsPanel;
@@ -18,6 +21,7 @@ public class MenuScreen extends JFrame {
     private JScrollPane cartDisplayScrollPane;
     private JTextArea cartDisplayTextArea;
 
+    java.util.Queue<JCheckBox> checkedBoxes = new LinkedList<>();
     public MenuScreen(String title) {
         super(title);
 
@@ -26,6 +30,25 @@ public class MenuScreen extends JFrame {
         this.setSize(800, 600);
         this.pack();
 
+        //Add ItemListener to each pizza topping checkbox
+        //If any checkboxes are added or removed from the UI, they need to be added/removed from this array
+        JCheckBox[] checkBoxes = {pepperoniCheckBox, mushroomCheckBox, sausageCheckBox, greenPepperCheckBox, baconCheckBox, onionCheckBox, blackOlivesCheckBox, extraCheeseCheckBox};
+        for(JCheckBox checkBox : checkBoxes) {
+            checkBox.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if(e.getStateChange() == ItemEvent.SELECTED) {
+                        if(checkedBoxes.size() == 4) {
+                            JCheckBox removeBox = checkedBoxes.remove();
+                            removeBox.setSelected(false);
+                        }
+                        checkedBoxes.add((JCheckBox) e.getItemSelectable());
+                    } else {
+                        checkedBoxes.remove((JCheckBox) e.getItemSelectable());
+                    }
+                }
+            });
+        }
         printToReceiptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,6 +62,22 @@ public class MenuScreen extends JFrame {
                 }
             }
         });
+
+
+        /*pepperoniCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                    if(checkedBoxes.size() == 4) {
+                        JCheckBox removeBox = checkedBoxes.remove();
+                        removeBox.setSelected(false);
+                    }
+                    checkedBoxes.add((JCheckBox) e.getItemSelectable());
+                } else {
+                    checkedBoxes.remove((JCheckBox) e.getItemSelectable());
+                }
+            }
+        });*/
     }
 
     {
