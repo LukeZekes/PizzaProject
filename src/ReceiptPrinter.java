@@ -20,6 +20,7 @@ public class ReceiptPrinter {
      * @throws IOException if there is an issue writing to file
      */
     public static void printReceipt(Customer customer, String outputFilePath) throws IOException {
+        new File(outputFilePath).createNewFile();
         BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath));
         StringBuilder sb = new StringBuilder();
         NumberFormat moneyFormat = NumberFormat.getCurrencyInstance(Locale.US);

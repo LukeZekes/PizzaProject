@@ -8,7 +8,7 @@ import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 public class Customer {
     final int DEFAULT_ORDER_SIZE = 10;
     final static PhoneNumberFormat DEFAULT_PHONE_NUMBER_FORMAT = PhoneNumberFormat.NATIONAL;
-    final static String path = "customers.txt";
+    static String path = "customers.txt";
     public String firstName, lastName, phoneNum, email, fullAddress, streetAddress, city, state, ZIP, password;
     public int id; //-1 if guest
     public static Customer currentCustomer;
@@ -93,23 +93,24 @@ public class Customer {
 
      */
     public static Customer createAccount(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw) throws Exception {
-            //Check if phone number is valid
-            if(!validatePhoneNumber(pn))
-                throw new Exception("That is not a valid US phone number!");
-            //Reformat phone number to standard format Customer.DEFAULT_PHONE_NUMBER_FORMAT: 1234567890 -> (123) 456 7890
-            pn = reformatPhoneNumber(pn);
-            //Check for account with same phone number            
-            BufferedReader reader = new BufferedReader(new FileReader(path));
-            String line;
-            reader.readLine();
-            while((line = reader.readLine()) != null) {
-                if(line.split(",")[3].equals(pn)) {
-                    //An account already has this phone number
-                    reader.close();
-                    throw new Exception("An account with the phone number already exists");
-                }
+        //Check if phone number is valid
+        new File(path).createNewFile();
+        if (!validatePhoneNumber(pn))
+            throw new Exception("That is not a valid US phone number!");
+        //Reformat phone number to standard format Customer.DEFAULT_PHONE_NUMBER_FORMAT: 1234567890 -> (123) 456 7890
+        pn = reformatPhoneNumber(pn);
+        //Check for account with same phone number
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        String line;
+        reader.readLine();
+        while ((line = reader.readLine()) != null) {
+            if (line.split(",")[3].equals(pn)) {
+                //An account already has this phone number
+                reader.close();
+                throw new Exception("An account with the phone number already exists");
             }
-            reader.close();
+        }
+        reader.close();
 
         Customer customer = new Customer(fn, ln, pn, e, sa, c, s, z, pw, false);
         saveCustomer(customer);
@@ -128,6 +129,7 @@ public class Customer {
      * @throws IOException
      */
     public static Customer createGuestAccount(String fn, String ln, String pn, String sa, String c, String s, String z) throws IOException {
+        new File(path).createNewFile();
         return new Customer(fn, ln, pn, null, sa, c, s, z, null, true);
     }
  
@@ -139,6 +141,8 @@ public class Customer {
      * @throws Exception if no customer is found with that information
      */
     public static Customer retrieveAccount(String phoneNum, String password) throws Exception {
+        new File(path).createNewFile();
+
         if(!validatePhoneNumber(phoneNum))
             throw new Exception("That is not a valid US phone number.");
 
@@ -165,7 +169,7 @@ public class Customer {
             return customer;
         }
         else {
-            throw new Exception("Customer with phone number " + phoneNum + " not found!");
+            throw new Exception("Incorrect phone number or password!");
         }
     }
     //#endregion
