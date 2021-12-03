@@ -1,6 +1,5 @@
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -10,18 +9,54 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MenuScreen extends JFrame {
+
+    /**
+     * Initializing GUI elements
+     * GUI layout is handled by IntelliJ UI Designer. See $$$setupUI$$$() below.
+     */
     private JPanel menuPanel, pizzaPanel, drinkPanel, pizzaToppingsPanel;
-    private JLabel menuLabel, pizzaMenuLabel, pizzaSizeLabel, pizzaCrustLabel, pizzaToppingsLabel, drinkLabel, drinkVarietyLabel, drinkSizeLabel, drinkIceLabel;
+    private JLabel menuLabel, pizzaMenuLabel, pizzaSizeLabel, pizzaCrustLabel, pizzaToppingsLabel, drinkLabel, drinkVarietyLabel, drinkSizeLabel, drinkIceLabel, printLabel;
     private JComboBox pizzaSizeBox, pizzaCrustBox, drinkVarietyBox, drinkSizeBox, drinkIceBox;
     private JCheckBox pepperoniCheckBox, mushroomCheckBox, sausageCheckBox, greenPepperCheckBox, baconCheckBox, onionCheckBox, blackOlivesCheckBox, extraCheeseCheckBox;
-    private JButton addPizzaToOrderButton, addDrinkToOrderButton, printToReceiptButton;
+    private JButton addPizzaToOrderButton, addDrinkToOrderButton, printToReceiptButton, clearAllSelectionsButton;
     private JScrollPane cartDisplayScrollPane;
     private JTextArea cartDisplayTextArea;
 
+    /**
+     * LinkedList used for storing all checked checkboxes. Used in itemStateChanged to limit number of checkboxes to 4.
+     */
     java.util.Queue<JCheckBox> checkedBoxes = new LinkedList<>();
+
+    /**
+     * Method to write attributes of the added pizza to the cart display text area
+     *
+     * @param item PizzaItem created by user
+     */
+    private void addPizzaToCart(OrderMenu.PizzaItem item) {
+        String txt = "Pizza:\n+Size: " + item.getSize() + "\n+Crust: " + item.getCrust() + "\n+Toppings: " + item.getToppings() + "\n+Cost: " + item.getCost() + "\n\n";
+        cartDisplayTextArea.append(txt);
+    }
+
+    /**
+     * Method to write attributes of the added drink to the cart display text area
+     *
+     * @param item DrinkItem created by user
+     */
+    private void addDrinkToCart(OrderMenu.DrinkItem item) {
+        String txt = "Drink:\n+Variety: " + item.getVariety() + "\n+Size: " + item.getSize() + "\n+Ice: " + item.getIce() + "\n+Cost: " + item.getCost() + "\n\n";
+        cartDisplayTextArea.append(txt);
+    }
+
+    /**
+     * MenuScreen constructor
+     * Also contains ActionListener and ItemListener methods, allowing buttons and checkboxes to function.
+     *
+     * @param title retrieves title set in Main
+     */
     public MenuScreen(String title) {
         super(title);
 
@@ -30,15 +65,21 @@ public class MenuScreen extends JFrame {
         this.setSize(800, 600);
         this.pack();
 
-        //Add ItemListener to each pizza topping checkbox
-        //If any checkboxes are added or removed from the UI, they need to be added/removed from this array
+        /**
+         * Add ItemListener to each pizza topping checkbox
+         * If any checkboxes are added or removed from the UI, they need to be added/removed from this array
+         */
         JCheckBox[] checkBoxes = {pepperoniCheckBox, mushroomCheckBox, sausageCheckBox, greenPepperCheckBox, baconCheckBox, onionCheckBox, blackOlivesCheckBox, extraCheeseCheckBox};
-        for(JCheckBox checkBox : checkBoxes) {
+        for (JCheckBox checkBox : checkBoxes) {
             checkBox.addItemListener(new ItemListener() {
+                /**
+                 * ItemListener method to limit number of selected checkboxes to 4.
+                 * @param e
+                 */
                 @Override
                 public void itemStateChanged(ItemEvent e) {
-                    if(e.getStateChange() == ItemEvent.SELECTED) {
-                        if(checkedBoxes.size() == 4) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        if (checkedBoxes.size() == 4) {
                             JCheckBox removeBox = checkedBoxes.remove();
                             removeBox.setSelected(false);
                         }
@@ -49,20 +90,75 @@ public class MenuScreen extends JFrame {
                 }
             });
         }
+
         printToReceiptButton.addActionListener(new ActionListener() {
+            /**
+             * ActionListener that calls ReceiptPrinter.printReceipt(), using current customer info.
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("PRINTING RECEIPT");
                 try {
                     ReceiptPrinter.printReceipt(Customer.currentCustomer, "receipt.txt");
+                    printLabel.setForeground(Color.GREEN);
+                    printLabel.setText("Receipt successfully printed!");
                 } catch (IOException ioException) {
-                    System.out.println("Could not produce receipt:\n");
-                    System.out.println(ioException.getMessage());
+                    printLabel.setForeground(Color.RED);
+                    printLabel.setText(ioException.getMessage());
                     ioException.printStackTrace();
                 }
             }
         });
 
+        addPizzaToOrderButton.addActionListener(new ActionListener() {
+            /**
+             * ActionListener used to get size, crust, and toppings chosen by user
+             * Adds a new PizzaItem to OrderMenu.orderItemArray
+             * Calls addPizzaToCart method to add it to the cart display text area
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String size = String.valueOf(pizzaSizeBox.getSelectedItem());
+                String crust = String.valueOf(pizzaCrustBox.getSelectedItem());
+                ArrayList<String> toppings = new ArrayList<>();
+                for (JCheckBox selectedTopping : checkedBoxes) {
+                    toppings.add(selectedTopping.getText());
+                }
+                OrderMenu.AddPizza(size, crust, toppings);
+                addPizzaToCart((OrderMenu.PizzaItem) OrderMenu.orderItemArray.get(OrderMenu.orderItemArray.size() - 1));
+            }
+        });
+
+        addDrinkToOrderButton.addActionListener(new ActionListener() {
+            /**
+             * ActionListener used to get size, ice, and variety of drink chosen by user
+             * Adds a new DrinkItem to OrderMenu.orderItemArray
+             * Calls addDrinkToCart method to add it to the cart display text area
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String size = String.valueOf(drinkSizeBox.getSelectedItem());
+                String ice = String.valueOf(drinkIceBox.getSelectedItem());
+                String variety = String.valueOf(drinkVarietyBox.getSelectedItem());
+                OrderMenu.AddDrink(size, ice, variety);
+                addDrinkToCart((OrderMenu.DrinkItem) OrderMenu.orderItemArray.get(OrderMenu.orderItemArray.size() - 1));
+            }
+        });
+
+        clearAllSelectionsButton.addActionListener(new ActionListener() {
+            /**
+             * ActionListener that clears all items from OrderMenu.orderItemArray, as well as the cart display text area.
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OrderMenu.orderItemArray.clear();
+                cartDisplayTextArea.setText("");
+            }
+        });
 
         /*pepperoniCheckBox.addItemListener(new ItemListener() {
             @Override
@@ -96,7 +192,7 @@ public class MenuScreen extends JFrame {
      */
     private void $$$setupUI$$$() {
         menuPanel = new JPanel();
-        menuPanel.setLayout(new GridLayoutManager(4, 2, new Insets(10, 10, 10, 10), -1, -1));
+        menuPanel.setLayout(new GridLayoutManager(5, 2, new Insets(10, 10, 10, 10), -1, -1));
         menuPanel.setAlignmentX(0.5f);
         menuPanel.setAlignmentY(0.5f);
         menuLabel = new JLabel();
@@ -206,12 +302,18 @@ public class MenuScreen extends JFrame {
         drinkPanel.add(addDrinkToOrderButton, new GridConstraints(4, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         printToReceiptButton = new JButton();
         printToReceiptButton.setText("Print to Receipt");
-        menuPanel.add(printToReceiptButton, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        menuPanel.add(printToReceiptButton, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         cartDisplayScrollPane = new JScrollPane();
         menuPanel.add(cartDisplayScrollPane, new GridConstraints(1, 1, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         cartDisplayTextArea = new JTextArea();
         cartDisplayTextArea.setEditable(false);
         cartDisplayScrollPane.setViewportView(cartDisplayTextArea);
+        clearAllSelectionsButton = new JButton();
+        clearAllSelectionsButton.setText("Clear All Selections");
+        menuPanel.add(clearAllSelectionsButton, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        printLabel = new JLabel();
+        printLabel.setText("");
+        menuPanel.add(printLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

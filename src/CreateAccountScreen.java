@@ -7,6 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CreateAccountScreen extends JFrame {
+    /**
+     * Initializing GUI elements
+     * GUI layout is handled by IntelliJ UI Designer. See $$$setupUI$$$() below.
+     */
     public JPanel createAccountPanel;
     private JLabel accountCreationLabel, firstNameLabel, lastNameLabel, phoneNumLabel, emailLabel, addressLabel, cityLabel, stateLabel, zipLabel, passLabel, confirmPassLabel, errorLabel;
     private JTextField firstNameTextField, lastNameTextField, phoneNumTextField, emailTextField, addressTextField, cityTextField, stateTextField, zipTextField;
@@ -30,7 +34,7 @@ public class CreateAccountScreen extends JFrame {
             /**
              * Creates a new account using Customer.createAccount().
              * @param e
-             * @throws Exception when the two password fields do not match
+             * @throws Exception when the two password fields do not match or a field is left blank
              */
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,6 +50,13 @@ public class CreateAccountScreen extends JFrame {
                     String pw = passwordField.getText();
                     String cpw = confirmPasswordField.getText();
 
+                    JTextField[] allFields = {firstNameTextField, lastNameTextField, phoneNumTextField, emailTextField, addressTextField, cityTextField, stateTextField, zipTextField, passwordField, confirmPasswordField};
+                    for (JTextField field : allFields) {
+                        if (field.getText().equals("")) {
+                            throw new Exception("Please fill in all fields.");
+                        }
+                    }
+
                     if (!pw.equals(cpw)) {
                         throw new Exception("Passwords do not match.");
                     }
@@ -55,6 +66,7 @@ public class CreateAccountScreen extends JFrame {
                     errorLabel.setText("Account successfully created!");
 
                 } catch (Exception ex) {
+                    errorLabel.setForeground(Color.RED);
                     errorLabel.setText(ex.getMessage());
                     ex.printStackTrace();
                 }

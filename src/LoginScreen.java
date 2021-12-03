@@ -7,6 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginScreen extends JFrame {
+    /**
+     * Initializing GUI elements
+     * GUI layout is handled by IntelliJ UI Designer. See $$$setupUI$$$() below.
+     */
     private JPanel loginPanel;
     private JLabel shopName, phoneNumLabel, passLabel, errorLabel;
     private JTextField phoneNumTextField;

@@ -18,7 +18,7 @@ public class OrderMenu {
      */
     public static void AddPizza(String size, String crust, ArrayList<String> toppings){
         orderItemArray.add(new PizzaItem(size, crust, toppings));
-    };
+    }
     /**
      * Adds a drink object to the order with the specified customization.
      * @param size The size of the drink. The valid sizes are (case insensitive): "SMALL", "MEDIUM", "LARGE", "EXTRA-LARGE".
@@ -28,7 +28,7 @@ public class OrderMenu {
      */
     public static void AddDrink(String size, String ice, String variety){
         orderItemArray.add(new DrinkItem(size, ice, variety));
-    };
+    }
     /**
      * Class that PizzaItem and DrinkItem inherit from.
      */
