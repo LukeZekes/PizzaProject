@@ -16,15 +16,13 @@ public class ReceiptPrinter {
     /**
      * Creates a receipt and stores it in the file specified at outputFilePath.
      * @param customer The Customer object containing information about the user's account.
-     * @param order The OrderMenu object containing information about the order.
      * @param outputFilePath The path of the file that the receipt will be output to.
-     * @throws IOException
+     * @throws IOException if there is an issue writing to file
      */
     public static void printReceipt(Customer customer, String outputFilePath) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath));
         StringBuilder sb = new StringBuilder();
         NumberFormat moneyFormat = NumberFormat.getCurrencyInstance(Locale.US);
-
         float total = 0; //Needs to be calculated early so that the cost column can be the appropriate width
         for(OrderMenu.OrderItem item: OrderMenu.orderItemArray) {
             total += item.getCost();
@@ -76,7 +74,6 @@ public class ReceiptPrinter {
                 sb.append(getCellText(String.format(fString, item.getSize(), item.getCrust(), toppings), wCol2));
                 //Reformat cost to look like actual money
                 sb.append(getCellText(moneyFormat.format(item.cost), wCol3) + "|\n");
-                total += item.getCost();
             }
             else {
                 OrderMenu.DrinkItem item = (OrderMenu.DrinkItem) OrderMenu.orderItemArray.get(i);
@@ -104,7 +101,7 @@ public class ReceiptPrinter {
 
         sb.append(getCellText("", wCol1));
         sb.append(getCellText(alignRight("Total + tax", wCol2), wCol2));
-        sb.append(getCellText(moneyFormat.format(total += orderTax), wCol3) + "|\n");
+        sb.append(getCellText(moneyFormat.format(total + orderTax), wCol3) + "|\n");
         sb.append(tableBorder + "\n");
 
 
@@ -112,7 +109,7 @@ public class ReceiptPrinter {
         
         //#region Footer
         String dateStr = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-        sb.append(String.format("Date:" + dateStr));
+        sb.append("Date:" + dateStr);
         //#endregion
         writer.write(sb.toString());
         writer.close();
