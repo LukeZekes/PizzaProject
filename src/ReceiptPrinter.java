@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Class that takes customer and order information to produce a receipt 
+ * Class that takes customer and order information to produce a receipt.
  */
 public class ReceiptPrinter {
     public static int width;
@@ -179,9 +179,9 @@ public class ReceiptPrinter {
      * Truncates a String to fit within a specified width
      * @param str The String to be truncated
      * @param maxWidth The maximum width of the String
-     * @return If <i>str</i>.length() <= <i>maxWidth</i>, then returns the original string.
-     * <li>Otherwise, return a truncated version of the string with "..." at the end, so that
-     *  the entire String including the ellipsis, has width <i>maxWidth</i>.</li>
+     * @return If <i>str</i>.length() &lt;= <i>maxWidth</i>, then returns the original string.
+     * Otherwise, return a truncated version of the string with "..." at the end, so that
+     *  the entire String including the ellipsis, has width <i>maxWidth</i>.
      */
     private static String truncateString(String str, int maxWidth) {
         if(str.length() <= maxWidth)

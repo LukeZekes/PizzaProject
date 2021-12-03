@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Class representing the login screen. Contains all of the elements of the login screen.
+ */
 public class LoginScreen extends JFrame {
     /**
      * Initializing GUI elements
@@ -19,7 +22,7 @@ public class LoginScreen extends JFrame {
 
     /**
      * Initializes a LoginScreen and handles ActionListeners for loginButton and createAccountButton
-     * @param title
+     * @param title The title of the window
      */
     public LoginScreen(String title) {
         super(title);

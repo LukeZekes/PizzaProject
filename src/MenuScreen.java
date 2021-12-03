@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
 
+/**
+ * Class representing the menu screen of the application. Contains all elements of the menu.
+ */
 public class MenuScreen extends JFrame {
 
     /**

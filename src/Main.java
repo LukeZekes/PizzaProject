@@ -1,5 +1,8 @@
 import javax.swing.*;
 
+/**
+ * Main class that launches the application.
+ */
 public class Main{
     /**
      * Main method. Sets title of the program and initializes a new LoginScreen.
