@@ -92,8 +92,7 @@ public class Customer {
      * @throws IOException
 
      */
-    public static Customer createAccount(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw) throws IOException {
-        try {
+    public static Customer createAccount(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw) throws Exception {
             //Check if phone number is valid
             if(!validatePhoneNumber(pn))
                 throw new Exception("That is not a valid US phone number!");
@@ -111,10 +110,7 @@ public class Customer {
                 }
             }
             reader.close();
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-            return null;
-        }
+
         Customer customer = new Customer(fn, ln, pn, e, sa, c, s, z, pw, false);
         saveCustomer(customer);
         return customer;
