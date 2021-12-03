@@ -26,7 +26,7 @@ public class Customer {
      * @param z ZIP code
      * @param pw Password
      * @param isGuest True if this is only a guest account, false if this is a new account to be saved
-     * @throws IOException
+     * @throws IOException if Customer.incrementNumCustomers() fails
      */
     private Customer(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw, boolean isGuest) throws IOException {
         if(isGuest) {
@@ -60,9 +60,8 @@ public class Customer {
      * @param z ZIP code
      * @param pw Password
      * @param existingID ID of customer's account
-     * @t
      */
-    private Customer(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw, int existingID) throws IOException {
+    private Customer(String fn, String ln, String pn, String e, String sa, String c, String s, String z, String pw, int existingID) {
         firstName = fn;
         lastName = ln;
         phoneNum = pn;
@@ -126,7 +125,7 @@ public class Customer {
      * @param s State
      * @param z ZIP
      * @return A Customer object with the included information, and an ID of -1
-     * @throws IOException
+     * @throws IOException If an IO error occured or if Customer.incrementNumCustomers() fails
      */
     public static Customer createGuestAccount(String fn, String ln, String pn, String sa, String c, String s, String z) throws IOException {
         new File(path).createNewFile();
@@ -135,8 +134,8 @@ public class Customer {
  
     /**
      * Searches for an account in the database using a phone number and password
-     * @param phoneNum
-     * @param password
+     * @param phoneNum The phone number tied to the customer's account
+     * @param password The password tied to the customer's account
      * @return A Customer object with the account's information and ID
      * @throws Exception if no customer is found with that information
      */
@@ -179,7 +178,7 @@ public class Customer {
      * Saves a Customer to the database as a string in the format:
      * <p>id,first name,last name,phone number,email,password,full address</p>
      * @param customer The Customer object to be saved
-     * @throws IOException
+     * @throws IOException If customers.txt cannot be accessed for any reason
      */
     private static void saveCustomer(Customer customer) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -195,7 +194,7 @@ public class Customer {
      * Attempts to delete the account with the specified ID
      * @param customerID The ID number of the account to delete
      * @return True if successful, false if customer could not be found
-     * @throws IOException
+     * @throws IOException If customers.txt cannot be accessed for any reason
      */
     public static boolean deleteAccount(int customerID) throws IOException {
         int matchID = customerID;
@@ -238,7 +237,7 @@ public class Customer {
      * Increments the current and total number of customers and updates customers.txt to reflect these new values.
      * @return An array of integers, where [0] is the current number of stored customers and [1] is the total number of customers
      * that have ever been stored
-     * @throws IOException
+     * @throws IOException If customers.txt cannot be accessed for any reason
      */
     private static int[] incrementNumCustomers() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
@@ -270,7 +269,7 @@ public class Customer {
      * Decrements the number of current customers and updates customers.txt to reflect these new values.
      * If for some reason either value attempts to go below zero, the file will be reset so that both values are zero and there are no accounts saved
      * @return An array of integers, where [0] is the current number of stored customers and [1] is the total number of customers
-     * @throws IOException
+     * @throws IOException If customers.txt cannot be accessed for any reason
      */
     private static int[] decrementNumCustomers() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
@@ -309,7 +308,7 @@ public class Customer {
      * Gets the <b>current</b> number of customers stored in customers.txt, and the <b>total</b> number of customers
      * that have been stored (including deleted entires).
      * @return an array of integers, where [0] = current number of customers,[1] = total number of customers
-     * @throws IOException
+     * @throws IOException If customers.txt cannot be accessed for any reason
      */
     private static int[] getNumCustomers() throws IOException {
         try {

@@ -20,7 +20,7 @@ public class CreateAccountScreen extends JFrame {
     /**
      * Initializes a CreateAccountScreen and handles ActionListeners for createAccountButton and returnToLoginScreenButton
      *
-     * @param title
+     * @param title The title of the window
      */
     public CreateAccountScreen(String title) {
         super(title);

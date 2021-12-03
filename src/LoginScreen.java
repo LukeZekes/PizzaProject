@@ -19,7 +19,7 @@ public class LoginScreen extends JFrame {
 
     /**
      * Initializes a LoginScreen and handles ActionListeners for loginButton and createAccountButton
-     * @param title
+     * @param title The title of the window
      */
     public LoginScreen(String title) {
         super(title);
