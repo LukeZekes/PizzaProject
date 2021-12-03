@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class MenuScreen extends JFrame {
 
@@ -37,7 +39,11 @@ public class MenuScreen extends JFrame {
      * @param item PizzaItem created by user
      */
     private void addPizzaToCart(OrderMenu.PizzaItem item) {
-        String txt = "Pizza:\n+Size: " + item.getSize() + "\n+Crust: " + item.getCrust() + "\n+Toppings: " + item.getToppings() + "\n+Cost: " + item.getCost() + "\n\n";
+        String toppingsText = item.getToppings().toString();
+        toppingsText = item.getToppings().size() > 0 ? toppingsText.substring(1, toppingsText.length() - 1) : "None";
+        String costText = NumberFormat.getCurrencyInstance(Locale.US).format(item.getCost());
+
+        String txt = "Pizza:\n+Size: " + item.getSize() + "\n+Crust: " + item.getCrust() + "\n+Toppings: " + toppingsText + " \n+Cost: " + costText + "\n\n";
         cartDisplayTextArea.append(txt);
     }
 
@@ -47,7 +53,9 @@ public class MenuScreen extends JFrame {
      * @param item DrinkItem created by user
      */
     private void addDrinkToCart(OrderMenu.DrinkItem item) {
-        String txt = "Drink:\n+Variety: " + item.getVariety() + "\n+Size: " + item.getSize() + "\n+Ice: " + item.getIce() + "\n+Cost: " + item.getCost() + "\n\n";
+        String costText = NumberFormat.getCurrencyInstance(Locale.US).format(item.getCost());
+
+        String txt = "Drink:\n+Variety: " + item.getVariety() + "\n+Size: " + item.getSize() + "\n+Ice: " + item.getIce() + "\n+Cost: " + costText + "\n\n";
         cartDisplayTextArea.append(txt);
     }
 
