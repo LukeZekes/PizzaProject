@@ -4,17 +4,23 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
-
+/**
+ * Class representing a customer. Contains customer data and methods to create and save an account to customers.txt, or to
+ * access an existing account from customers.txt.
+ */
 public class Customer {
     final int DEFAULT_ORDER_SIZE = 10;
     final static PhoneNumberFormat DEFAULT_PHONE_NUMBER_FORMAT = PhoneNumberFormat.NATIONAL;
+    /**
+     * The file containing all customer data
+     */
     static String path = "customers.txt";
     public String firstName, lastName, phoneNum, email, fullAddress, streetAddress, city, state, ZIP, password;
     public int id; //-1 if guest
     public static Customer currentCustomer;
     //#region Creating/Retrieving Account
     /**
-     * Private constructor used when creating a new account or creating a guest account.
+     * Private constructor used when creating a new account or creating a guest account
      * <b>DO NOT CALL TO CREATE A CUSTOMER!</b> Use <i>createAccount()</i> or <i>createGuestAccount()</i>.
      * @param fn First name
      * @param ln Last name
@@ -48,7 +54,7 @@ public class Customer {
         password = pw;
     }
     /**
-     * Private constructor used when retrieving an account from the database.
+     * Private constructor used when retrieving an account from the database
      * <b>DO NOT CALL TO CREATE A CUSTOMER!</b> Use <i>retrieveAccount()</i> or <i>createGuestAccount()</i>.
      * @param fn First name
      * @param ln Last name

@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Class that takes customer and order information to produce a receipt 
+ * Class that takes customer and order information to produce a receipt.
  */
 public class ReceiptPrinter {
     public static int width;
