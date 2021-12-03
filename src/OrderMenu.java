@@ -78,11 +78,8 @@ public class OrderMenu {
                 case "Large":
                     this.cost = lCost;
                     break;
-                case "Extra-large":
-                    this.cost = xLCost;
-                    break;
                 default:
-                    System.out.println("Invalid size, defaulting to EXTRA-LARGE");
+//                    System.out.println("Invalid size, defaulting to EXTRA-LARGE");
                     this.size = "Extra-Large";
                     this.cost = xLCost;
                     break;
@@ -142,11 +139,8 @@ public class OrderMenu {
                 case "Large":
                     this.cost = lCost;
                     break;
-                case "Extra-Large":
-                    this.cost = xLCost;
-                    break;
                 default:
-                    System.out.println("Invalid size, defaulting to Extra-Large");
+//                    System.out.println("Invalid size, defaulting to Extra-Large");
                     this.size = "Extra-Large";
                     this.cost = xLCost;
                     break;
