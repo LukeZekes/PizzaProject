@@ -61,9 +61,14 @@ public class CreateAccountScreen extends JFrame {
                         throw new Exception("Passwords do not match.");
                     }
 
-                    Customer.createAccount(fn, ln, pn, email, sa, c, s, z, pw);
+                    Customer.currentCustomer = Customer.createAccount(fn, ln, pn, email, sa, c, s, z, pw);
                     errorLabel.setForeground(Color.GREEN);
                     errorLabel.setText("Account successfully created!");
+                    //Wait a short delay, then move to the menu screen
+                    Thread.sleep(1000);
+                    dispose();
+                    JFrame frame = new MenuScreen(title);
+                    frame.setVisible(true);
 
                 } catch (Exception ex) {
                     errorLabel.setForeground(Color.RED);

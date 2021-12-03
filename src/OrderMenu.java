@@ -64,25 +64,26 @@ public class OrderMenu {
          * @param toppings The toppings on the pizza
          */
         PizzaItem(String size, String crust, ArrayList<String> toppings) {
-            this.size = size.toUpperCase();
+            this.size = size.toLowerCase();
+            this.size = this.size.substring(0, 1).toUpperCase() + this.size.substring(1);
             this.crust = crust;
             this.toppings = toppings;
             switch(this.size) {
-                case "SMALL":
+                case "Small":
                     this.cost = sCost;
                     break;
-                case "MEDIUM":
+                case "Medium":
                     this.cost = mCost;
                     break;
-                case "LARGE":
+                case "Large":
                     this.cost = lCost;
                     break;
-                case "EXTRA-LARGE":
+                case "Extra-large":
                     this.cost = xLCost;
                     break;
                 default:
                     System.out.println("Invalid size, defaulting to EXTRA-LARGE");
-                    this.size = "EXTRA-LARGE";
+                    this.size = "Extra-Large";
                     this.cost = xLCost;
                     break;
             }
@@ -127,25 +128,26 @@ public class OrderMenu {
          * @param variety The variety of the drink. <i>E.g. Water, Coca-Cola, Sprite Zero, etc.</i> 
          */
         DrinkItem(String size, String ice, String variety) {
-            this.size = size.toUpperCase();
+            this.size = size.toLowerCase();
+            this.size = this.size.substring(0, 1).toUpperCase() + this.size.substring(1);
             this.ice = ice;
             this.variety = variety;
             switch(this.size) {
-                case "SMALL":
+                case "Small":
                     this.cost = sCost;
                     break;
-                case "MEDIUM":
+                case "Medium":
                     this.cost = mCost;
                     break;
-                case "LARGE":
+                case "Large":
                     this.cost = lCost;
                     break;
-                case "EXTRA-LARGE":
+                case "Extra-Large":
                     this.cost = xLCost;
                     break;
                 default:
-                    System.out.println("Invalid size, defaulting to EXTRA-LARGE");
-                    this.size = "EXTRA-LARGE";
+                    System.out.println("Invalid size, defaulting to Extra-Large");
+                    this.size = "Extra-Large";
                     this.cost = xLCost;
                     break;
             }
