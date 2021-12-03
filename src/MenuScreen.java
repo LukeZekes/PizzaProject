@@ -113,7 +113,7 @@ public class MenuScreen extends JFrame {
                 try {
                     ReceiptPrinter.printReceipt(Customer.currentCustomer, "receipt.txt");
                     printLabel.setForeground(Color.GREEN);
-                    printLabel.setText("Receipt successfully printed!");
+                    printLabel.setText("Order successfully placed! (Check receipt.txt)");
                 } catch (IOException ioException) {
                     printLabel.setForeground(Color.RED);
                     printLabel.setText(ioException.getMessage());
